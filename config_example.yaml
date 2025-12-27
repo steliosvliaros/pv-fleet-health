@@ -1,0 +1,32 @@
+scada_path: data/scada_wide.csv
+events_path: data/events.csv
+metadata_path: data/plant_metadata.csv
+timestamp_col: Timestamp
+timestamp_format: null
+default_timezone: Europe/Athens
+standard_freq: 5min
+
+daylight_poa_threshold_wm2: 50.0
+poa_for_kpi_min_wm2: 200.0
+min_valid_poa_wm2: 0.0
+max_valid_poa_wm2: 1400.0
+min_valid_tmod_c: -20.0
+max_valid_tmod_c: 90.0
+
+max_interp_gap_minutes: 15
+drop_if_missing_key_fraction: 0.10
+
+counter_reset_negative_kwh_threshold: -0.01
+
+clearsky_qc_quantile: 0.98
+clearsky_qc_min_points_per_day: 50
+
+model_min_points: 2000
+walkforward_train_days: 60
+walkforward_test_days: 14
+
+residual_z_threshold: 4.0
+rolling_window_days: 7
+
+selected_plant: null
+random_seed: 42
