@@ -33,3 +33,6 @@ ignore = ["E501"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["pv_fleet_health"]
+
+[tool.ruff.lint.per-file-ignores]
+"notebooks/*.ipynb" = ["E402", "E712"]
