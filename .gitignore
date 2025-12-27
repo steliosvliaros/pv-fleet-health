@@ -1,33 +1,31 @@
-[build-system]
-requires = ["setuptools>=68", "wheel"]
-build-backend = "setuptools.build_meta"
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
 
-[project]
-name = "pv-fleet-health"
-version = "0.1.0"
-description = "PV fleet SCADA + events health monitoring (prototype)"
-requires-python = ">=3.10"
-dependencies = [
-  "numpy>=1.24",
-  "pandas>=2.1",
-  "matplotlib>=3.7",
-  "pyarrow>=14.0",
-  "pyyaml>=6.0",
-]
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
 
-[project.optional-dependencies]
-ml = ["scikit-learn>=1.3", "statsmodels>=0.14", "scipy>=1.10"]
-pv = ["pvlib>=0.10"]
-dev = ["pre-commit>=3.6", "ruff>=0.6", "black>=24.0", "ipykernel"]
+# Environments
+.venv/
+venv/
+.env
+.envrc
 
-[tool.black]
-line-length = 100
-target-version = ["py311"]
+# OS
+.DS_Store
+Thumbs.db
 
-[tool.ruff]
-line-length = 100
-select = ["E", "F", "I", "UP", "B"]
-ignore = ["E501"]
+# Data & outputs (keep structure, not content)
+data/*
+!data/.gitkeep
+outputs/*
+!outputs/.gitkeep
 
-[tool.ruff.isort]
-known-first-party = ["pv_fleet_health"]
+# Logs
+*.log
