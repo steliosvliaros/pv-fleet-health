@@ -1,16 +1,19 @@
 from dataclasses import dataclass
-from typing import Optional, Set, Any, Dict
-import yaml
+from pathlib import Path
+from typing import Any
+
 import numpy as np
+import yaml
+
 
 @dataclass(frozen=True)
 class Config:
     # I/O
     scada_path: str
     events_path: str
-    metadata_path: Optional[str] = None
+    metadata_path: str | None = None
     timestamp_col: str = "Timestamp"
-    timestamp_format: Optional[str] = None
+    timestamp_format: str | None = None
 
     # Time
     default_timezone: str = "Europe/Athens"
@@ -28,8 +31,8 @@ class Config:
     # Missing data policy
     max_interp_gap_minutes: int = 15
     drop_if_missing_key_fraction: float = 0.10
-    allow_interp_signals: Set[str] = frozenset({"poa_irradiance_wm2", "tmod_c", "tamb_c"})
-    allow_ffill_signals: Set[str] = frozenset()
+    allow_interp_signals: set[str] = frozenset({"poa_irradiance_wm2", "tmod_c", "tamb_c"})
+    allow_ffill_signals: set[str] = frozenset()
 
     # Counters
     counter_reset_negative_kwh_threshold: float = -0.01
@@ -48,15 +51,25 @@ class Config:
     rolling_window_days: int = 7
 
     # Prototype toggles
-    selected_plant: Optional[str] = None
+    selected_plant: str | None = None
     random_seed: int = 42
 
     def seed(self) -> None:
         np.random.seed(self.random_seed)
 
+
 def load_config_yaml(path: str) -> Config:
-    with open(path, "r", encoding="utf-8") as f:
-        d: Dict[str, Any] = yaml.safe_load(f)
+    config_path = Path(path).resolve()
+    with open(config_path, encoding="utf-8") as f:
+        d: dict[str, Any] = yaml.safe_load(f)
+
+    # Resolve relative paths in the data fields
+    base_dir = config_path.parent
+    for key in ["scada_path", "events_path", "metadata_path"]:
+        if key in d and d[key]:
+            p = Path(d[key])
+            if not p.is_absolute():
+                d[key] = str(base_dir / p)
 
     # Fill defaults for absent keys by constructing with **d
     cfg = Config(**d)
