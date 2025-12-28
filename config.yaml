@@ -4,7 +4,9 @@ metadata_path: data/plant_metadata.csv
 timestamp_col: Timestamp
 timestamp_format: null
 default_timezone: Europe/Athens
-standard_freq: 5min
+# Note: standard_freq was increased from '5min' to '15min' to match SCADA acquisition resolution
+# and reduce processing load; this change affects time-series resampling granularity pipeline-wide.
+standard_freq: 15min
 
 daylight_poa_threshold_wm2: 50.0
 poa_for_kpi_min_wm2: 200.0
